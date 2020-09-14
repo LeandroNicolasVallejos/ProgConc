@@ -11,50 +11,42 @@ package TP3.Ej3;
  */
 public class Turno {
 
-    char memoria = ' ';
-    String aux = "";
-    boolean si;
-//        public boolean autorizacion(String nom) {
-//        if (nom.equals('a')) {
-//            if (memoria == ' ' || memoria == 'c') {
-//                aux = aux + "A";
-//                memoria = 'a';
-//            }
+//    private char memoria = ' ';
+    private String aux = "";
+//    private boolean si = false;
+    private int turno = 1;
+    
+    public synchronized void setString(String st){
+        aux = aux + st;
+    }
+    
+    public String getString(){
+        return this.aux;
+    }
+    
+    public int getNum(){
+        return this.turno;
+    }
+    public void incrementaTurno(){
+        if(turno == 1 || turno == 2){
+            turno++;
+        }
+        else{ //Para cuando se imprimió el turno 3, volvemos al 1
+            turno = 1;
+        }
+    }
+//    public synchronized boolean tengoTurno(String nombreThread) {
+//        if (nombreThread.equals("La") && (memoria == ' ' || memoria == 'c')) {
+//            si = true;
 //        } else {
-//            if (nom.equals('b')) {
-//                if (memoria == 'a') {
-//                    aux = aux + "BB";
-//                    memoria = 'b';
-//                }
-//            } else { //nom == 'c'
-//                if (memoria == 'b') {
-//                    aux = aux + "CCC";
-//                    memoria = 'c';
+//            if (nombreThread.equals("Lb") && (memoria == 'a')) {
+//                si = true;
+//            } else {
+//                if (nombreThread.equals("Lc") && (memoria == 'b')) {
+//                    si = true;
 //                }
 //            }
 //        }
 //        return si;
 //    }
-    public String autorizacion(String nom) {
-        if (nom.equals("La")) {
-            if (memoria == ' ' || memoria == 'c') {
-                aux = aux + "A";
-                memoria = 'a';
-            }
-        } else {
-            if (nom.equals("Lb")) {
-                if (memoria == 'a') {
-                    aux = aux + "BB";
-                    memoria = 'b';
-                }
-            } else { //nom == 'c'
-                if (memoria == 'b') {
-                    aux = aux + "CCC";
-                    memoria = 'c';
-                }
-            }
-        }
-        return aux;
-    }
-
 }

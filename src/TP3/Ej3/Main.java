@@ -10,18 +10,19 @@ package TP3.Ej3;
  * @author Nicolás
  */
 public class Main {
-        public static void main(String[] args) {
 
-    Letra La = new Letra();
-    Letra Lb = new Letra();
-    Letra Lc = new Letra();
-    
-    Thread A = new Thread(La, "La");
-    Thread B = new Thread(Lb, "Lb");
-    Thread C = new Thread(Lc, "Lc");
-    
-    A.start();
-    B.start();
-    C.start();
-}
+    public static void main(String[] args) {
+
+        Letra la = new Letra();
+
+        Thread A = new Thread(la, "La");
+        Thread B = new Thread(la, "Lb");
+        Thread C = new Thread(la, "Lc");
+
+        A.start();
+        B.start();
+        C.start();
+        
+        
+    }
 }
