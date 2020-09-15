@@ -37,15 +37,15 @@ public class Jueguito implements Runnable {
 
     public void run() {
 //        for (int i = 0; i < 4; i++) {
-            try {
+//            try {
                 if (Thread.currentThread().getName().equalsIgnoreCase("orco")) {
                     this.golpear();
                 } else {
                     this.curar();
                 }
-                Thread.sleep(1000);
-            } catch (InterruptedException ex) {
-            }
+//                Thread.sleep(1000);
+//            } catch (InterruptedException ex) {
+//            }
 //        }
     }
 }
