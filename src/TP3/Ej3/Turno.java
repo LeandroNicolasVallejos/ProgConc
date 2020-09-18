@@ -20,11 +20,11 @@ public class Turno {
         aux = aux + st;
     }
     
-    public synchronized String getString(){
+    public String getString(){
         return this.aux;
     }
     
-    public synchronized int getNum(){
+    public int getNum(){
         return this.turno;
     }
     public synchronized void incrementaTurno(){
