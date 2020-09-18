@@ -20,14 +20,14 @@ public class Turno {
         aux = aux + st;
     }
     
-    public String getString(){
+    public synchronized String getString(){
         return this.aux;
     }
     
-    public int getNum(){
+    public synchronized int getNum(){
         return this.turno;
     }
-    public void incrementaTurno(){
+    public synchronized void incrementaTurno(){
         if(turno == 1 || turno == 2){
             turno++;
         }
