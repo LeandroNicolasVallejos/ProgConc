@@ -35,7 +35,7 @@ public class Surtidor {
         }
     }
 
-    private void sacarNafta(int cant) {
+    private synchronized void sacarNafta(int cant) {
         cantidadTotal -= cant;
         if(cantidadTotal <=0){
             conNafta = false;

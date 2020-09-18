@@ -5,9 +5,6 @@
  */
 package TP3.Ej4;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author Nicolás
@@ -64,12 +61,6 @@ public class Auto extends Vehiculo implements Runnable {
     public void run() {
         for (int i = 0; i < 5; i++) {
             andar();
-            try {
-                int numero = (int) (Math.random() * 10) + 1;
-                Thread.sleep(numero * 100);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-            }
             if (surti.getRestanteNafta() <= 0) {
                 i = i + 500; //PARA QUE ESTE AUTO YA NO ANDE MAS
             }
