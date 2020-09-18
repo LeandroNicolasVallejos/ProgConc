@@ -16,6 +16,7 @@ public class Letra implements Runnable {
 
     private final Turno turno = new Turno();
     String h = "";
+    int numero;
 
     public Letra() {
     }
@@ -25,19 +26,19 @@ public class Letra implements Runnable {
             if (Thread.currentThread().getName().equals("La") && turno.getNum() == 1) {
                 h = "A";
                 turno.incrementaTurno();
-                Thread.sleep(150);
+//                Thread.sleep(100);
             } else {
                 if (Thread.currentThread().getName().equals("Lb") && turno.getNum() == 2) {
                     h = h + "BB";
                     turno.incrementaTurno();
-                    Thread.sleep(150);
+//                    Thread.sleep(100);
                 } else {
                     if (Thread.currentThread().getName().equals("Lc") && turno.getNum() == 3) {
                         {
                             h = h + "CCC";
                             turno.incrementaTurno();
                             System.out.println(h); //Cuando llega acá, se completó una tanda de ABBCCC, es impresa
-                            Thread.sleep(150);
+//                            Thread.sleep(100);
                         }
                         
                     }
