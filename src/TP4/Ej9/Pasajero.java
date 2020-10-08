@@ -34,7 +34,7 @@ public class Pasajero implements Runnable {
     private void irAlTaxi() {
         System.out.println("Soy " + miNombre + ", y estoy yendo al taxi");
         try {
-            Thread.sleep((int) (Math.random() * 490));
+            Thread.sleep((int) (Math.random() * 2000));
         } catch (InterruptedException e) {
         }
     }
@@ -48,7 +48,7 @@ public class Pasajero implements Runnable {
             taxi.salir();
             System.out.println(ANSI_BLUE + "Soy "+ miNombre+", y ya dejé el taxi!");
         }else{
-            System.out.println(ANSI_RED + "Soy "+miNombre+", el taxi está ocupado");
+            System.out.println(ANSI_RED + "Soy "+miNombre+", el taxi está ocupado. Me voy caminando");
         }
     }
 }

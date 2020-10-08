@@ -20,7 +20,7 @@ public class Main {
         Thread[] hiloPasajeros = new Thread[15];
 
         for (int i = 0; i < 14; i++) {
-            Pasajero unPasajero = new Pasajero(unTaxi, "Pasajero" + i);
+            Pasajero unPasajero = new Pasajero(unTaxi, "Pasajero " + i);
             hiloPasajeros[i] = new Thread(unPasajero);
         }
         for (int x = 0; x < 14; x++) {
