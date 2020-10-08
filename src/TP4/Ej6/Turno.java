@@ -12,26 +12,32 @@ import java.util.concurrent.Semaphore;
  * @author Nicolás
  */
 public class Turno {
-
-    private Semaphore mutex;
-    private int numTurno;
-
-    public Turno() {
-        numTurno = 1;
-        mutex = new Semaphore(1); //Semaforo de un solo permiso
+    private Semaphore semA, semB,semC;
+    public Turno(){
+       semA= new Semaphore(1);
+       semB= new Semaphore(0);
+       semC= new Semaphore(0);
     }
-
-    public int getNum() {
-        return this.numTurno;
-    }
-
-    public void incrementaTurno() throws InterruptedException {
-        mutex.acquire();
-        if (numTurno == 1 || numTurno == 2) {
-            numTurno++;
-        } else { //Para cuando se imprimió el turno 3, volvemos al 1
-            numTurno = 1;
+    public void imprimir(String n,int cant){
+        if(n.equalsIgnoreCase("A") && semA.tryAcquire()){
+            for(int i=0;i<cant;i++){
+                System.out.print("A");
+            }
+            semB.release();
+        }else{
+            if(n.equalsIgnoreCase("B") && semB.tryAcquire()){
+            for(int i=0;i<cant;i++){
+                System.out.print("B");
+            }
+            semC.release();
+            }else{
+                if(n.equalsIgnoreCase("C") && semC.tryAcquire()){
+                    for(int i=0;i<cant;i++){
+                        System.out.print("C");
+                    }
+                    semA.release();
+                }
+            }
         }
-        mutex.release();
-    }
+   }
 }

@@ -11,18 +11,22 @@ package TP4.Ej6;
  */
 public class Main {
 
+    /**
+     * @param args the command line arguments
+     */
     public static void main(String[] args) {
-        Turno unTurno = new Turno();
-        Letra la = new Letra(unTurno);
-        Letra lb = new Letra(unTurno);
-        Letra lc = new Letra(unTurno);
-
-        Thread A = new Thread(la, "La");
-        Thread B = new Thread(lb, "Lb");
-        Thread C = new Thread(lc, "Lc");
-
-        A.start();
-        B.start();
-        C.start();
+        // TODO code application logic here
+        Turno t= new Turno();
+        Letra La= new Letra(t, 1, "A");
+        Letra Lb= new Letra(t, 2, "B");
+        Letra Lc= new Letra(t, 3, "C");
+        Thread a= new Thread(La);
+        Thread b= new Thread(Lb);
+        Thread c= new Thread(Lc);
+        
+        a.start();
+        b.start();
+        c.start();
     }
+    
 }
