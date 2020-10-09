@@ -27,7 +27,7 @@ public class PollosHermanos {
 
     public static final String ANSI_RESET = "\u001B[0m";
     //COLORES
-    private Semaphore semMozo, semSilla, semSilla2, semEmpleado, semCocinero, mutexSillas;
+    private Semaphore semMozo, semSilla, semSilla2, semEmpleado, semCocinero;
 
     public PollosHermanos(int maximoSillas) {
         semMozo = new Semaphore(0, true);
@@ -36,7 +36,6 @@ public class PollosHermanos {
         semEmpleado = new Semaphore(0, true);
 
         semSilla2 = new Semaphore(1, true);
-        mutexSillas = new Semaphore(1);
     }
 
     public void pedirComidaCocinero(String nombreEmpleado) { //Esto lo usa el Empleado ahora
@@ -54,10 +53,6 @@ public class PollosHermanos {
     public int entrarTienda(String nombreEmpleado) {
         int num = 0;
         System.out.println(ANSI_GREEN + "Hola! Soy el empleado " + nombreEmpleado + " y quiero entrar a comer");
-        try {
-            mutexSillas.acquire();
-        } catch (InterruptedException ex) {
-        }
         if (semSilla.tryAcquire()) { //Intenta ir a sentarse a la silla 1 primero.
             num = 1;
         } else {
@@ -65,7 +60,6 @@ public class PollosHermanos {
                 num = 2;
             }
         }
-        mutexSillas.release();
         return (num);
     }
 
