@@ -12,7 +12,7 @@ package TP4.Ej14;
 public class Main {
 
     public static void main(String[] args) {
-        PollosHermanos tienda = new PollosHermanos(2);
+        PollosHermanos tienda = new PollosHermanos();
         Mozo mozo = new Mozo(tienda);
         Thread hiloMozo = new Thread(mozo);
         hiloMozo.start();

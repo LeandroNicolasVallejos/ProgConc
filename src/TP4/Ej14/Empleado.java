@@ -12,11 +12,12 @@ package TP4.Ej14;
 public class Empleado implements Runnable {
 
     public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
 
     private String nombre;
     private PollosHermanos tienda;
     int numSilla;
-
+    
     public Empleado(String nom, PollosHermanos tie) {
         this.nombre = nom;
         this.tienda = tie;
@@ -39,7 +40,7 @@ public class Empleado implements Runnable {
             System.out.println(ANSI_BLUE + "          ----- Soy el empleado " + nombre + " y estoy comiendo en la silla " + numSilla);
             tienda.salirTienda(nombre, numSilla);
         } else {
-            System.out.println("Soy el empleado " + nombre + " y ambas sillas estan ocupadas. Me voy.");
+            System.out.println(ANSI_PURPLE + "Soy el empleado " + nombre + " y ambas sillas estan ocupadas. Renuncio y me voy.");
         }
     }
 }

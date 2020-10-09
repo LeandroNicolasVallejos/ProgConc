@@ -29,13 +29,13 @@ public class PollosHermanos {
     //COLORES
     private Semaphore semMozo, semSilla, semSilla2, semEmpleado, semCocinero;
 
-    public PollosHermanos(int maximoSillas) {
+    public PollosHermanos() {
         semMozo = new Semaphore(0, true);
         semCocinero = new Semaphore(0);
         semSilla = new Semaphore(1, true);
         semEmpleado = new Semaphore(0, true);
 
-        semSilla2 = new Semaphore(1, true);
+        semSilla2 = new Semaphore(1, true); //Un semáforo para cada silla.
     }
 
     public void pedirComidaCocinero(String nombreEmpleado) { //Esto lo usa el Empleado ahora
