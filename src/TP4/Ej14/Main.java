@@ -33,10 +33,6 @@ public class Main {
 
         for (int x = 0; x < 14; x++) {
             hiloEmpleados[x].start();
-            try {
-                Thread.sleep((int) (Math.random() * 500));
-            } catch (InterruptedException e) {
-            }
         }
     }
 }

@@ -6,8 +6,7 @@
 package TP4.Ej14;
 
 import java.util.concurrent.Semaphore;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  *
@@ -28,14 +27,15 @@ public class PollosHermanos {
     public static final String ANSI_RESET = "\u001B[0m";
     //COLORES
     private Semaphore semMozo, semSilla, semSilla2, semEmpleado, semCocinero;
+    private ReentrantLock lock = new ReentrantLock();
 
     public PollosHermanos() {
         semMozo = new Semaphore(0, true);
         semCocinero = new Semaphore(0);
-        semSilla = new Semaphore(1, true);
+        semSilla = new Semaphore(3, true); //Cambiado a semaforo general para dos clientes a la vez
         semEmpleado = new Semaphore(0, true);
 
-        semSilla2 = new Semaphore(1, true); //Un semáforo para cada silla.
+//        semSilla2 = new Semaphore(1, true); //Un semáforo para cada silla.
     }
 
     public void pedirComidaCocinero(String nombreEmpleado) { //Esto lo usa el Empleado ahora
@@ -54,12 +54,12 @@ public class PollosHermanos {
         int num = 0;
         System.out.println(ANSI_GREEN + "Hola! Soy el empleado " + nombreEmpleado + " y quiero entrar a comer");
         if (semSilla.tryAcquire()) { //Intenta ir a sentarse a la silla 1 primero.
-            num = 1;
-        } else {
-            if (semSilla2.tryAcquire()) { //Si la silla 1 esta ocupada, prueba con la 2. Sino, el Empleado se va.
-                num = 2;
-            }
-        }
+            num = 1;}
+//        } else {
+//            if (semSilla2.tryAcquire()) { //Si la silla 1 esta ocupada, prueba con la 2. Sino, el Empleado se va.
+//                num = 2;
+//            }
+//        }
         return (num);
     }
 
@@ -77,14 +77,17 @@ public class PollosHermanos {
     }
 
     public void salirTienda(String nombreEmpleado, int sillaALiberar) {
-        if (sillaALiberar == 1) //Depende de la silla donde estaba el cliente es el semaforo que libera
-        {
-            semSilla.release();
-        } else {
-            if (sillaALiberar == 2) {
-                semSilla2.release();
-            }
-        }
+//        if (sillaALiberar == 1) //Depende de la silla donde estaba el cliente es el semaforo que libera
+//        {
+//            semSilla.release();
+//        } else {
+//            if (sillaALiberar == 2) {
+//                semSilla2.release();
+//            }
+//        }
+        System.out.println(ANSI_RED+"CANTIDAD PERMISOS ANTES DE DEJAR UNO: "+semSilla.availablePermits());
+        semSilla.release(1); //Cambiado para que libere un permiso de los dos totales que tiene
+
         System.out.println(ANSI_BLUE + "          ----- Soy el empleado " + nombreEmpleado + " y ya sali de la tienda. La silla " + sillaALiberar + " quedo libre.");
     }
 

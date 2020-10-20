@@ -30,8 +30,16 @@ public class Empleado implements Runnable {
         } catch (InterruptedException e) {
         }
     }
+    
+    private void trabajar(){
+        System.out.println(nombre + ": Voy a trabajar un rato");
+        try{
+            Thread.sleep((int)(Math.random()*3736));
+        }catch(InterruptedException e){}
+    }
 
     public void run() {
+        while(true){
         this.irATienda();
         numSilla = tienda.entrarTienda(nombre);
         if (numSilla == 1 || numSilla == 2) {
@@ -40,7 +48,8 @@ public class Empleado implements Runnable {
             System.out.println(ANSI_BLUE + "          ----- Soy el empleado " + nombre + " y estoy comiendo en la silla " + numSilla);
             tienda.salirTienda(nombre, numSilla);
         } else {
-            System.out.println(ANSI_PURPLE + "Soy el empleado " + nombre + " y ambas sillas estan ocupadas. Renuncio y me voy.");
+            System.out.println(ANSI_PURPLE + "Soy el empleado " + nombre + " y ambas sillas estan ocupadas. Laburo un rato mas");
+            this.trabajar();
         }
-    }
+    }}
 }
