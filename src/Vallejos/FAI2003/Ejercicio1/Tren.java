@@ -18,7 +18,7 @@ public class Tren { //Recurso compartido por todos los hilos
     public static final String ANSI_BLUE = "\u001B[34m";
 
     private int cantTotal, cantSubidos;
-    private Semaphore semVendedor, semPasajero, semVuelta;
+    private Semaphore semVendedor, semPasajero, semVuelta, semAsientos;
 
     private boolean andando = false;
 
@@ -29,6 +29,7 @@ public class Tren { //Recurso compartido por todos los hilos
         this.cantSubidos = 0;
         semVendedor = new Semaphore(0);
         semPasajero = new Semaphore(0);
+        semAsientos = new Semaphore(cantAsientos, true); //Semaforo general
         semVuelta = new Semaphore(0); //Este es para avisarle al controlador que ya se puede dar la vuelta en el tren
     }
 
@@ -68,12 +69,13 @@ public class Tren { //Recurso compartido por todos los hilos
         return andando;
     }
 
-    public boolean puedoSubir() { //Gestiona si un pasajero se sube o no. Protegido con un lock.
+    public boolean puedoSubir() throws InterruptedException { //Gestiona si un pasajero se sube o no. Protegido con un lock.
         boolean sube = false;
         cerrojo.lock();
         try {
             if (cantSubidos < cantTotal) {
                 cantSubidos++;
+                semAsientos.acquire();
                 sube = true;
                 if (cantSubidos == cantTotal) {
                     System.out.println(ANSI_RED + " SE LLEGO A LA CAPACIDAD MAXIMA DEL TREN. SALIMOS!");
@@ -85,8 +87,8 @@ public class Tren { //Recurso compartido por todos los hilos
         }
         return sube;
     }
-    //@@@@@@@@@ FIN DE METODOS QUE USA EL PASAJERO @@@@@@@@@
 
+    //@@@@@@@@@ FIN DE METODOS QUE USA EL PASAJERO @@@@@@@@@
     //@@@@@@@@@ METODOS QUE USA EL CONTROLADOR DEL TREN @@@@@@@@@
     public void esperarVuelta() {
         try {
@@ -98,8 +100,8 @@ public class Tren { //Recurso compartido por todos los hilos
     public void reinicioVuelta() { //Avisada por controlTren de que la vuelta del tren termino.
         cerrojo.lock();
         try {
-            semVuelta = new Semaphore(0); //El semaforo de la vuelta es reiniciado para una nueva vuelta
             cantSubidos = 0; //Reinicia el contador de pasajeros subidos para comenzar una vuelta nueva.
+            semAsientos.release(cantTotal);
         } finally {
             cerrojo.unlock();
         }

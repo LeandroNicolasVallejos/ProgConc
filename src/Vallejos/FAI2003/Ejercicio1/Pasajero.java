@@ -39,14 +39,19 @@ public class Pasajero implements Runnable {
     public void run() {
         while (!diVuelta) {
             this.caminarUnRato();
-            this.comprarTicket();
-            if (tengoTicket && tren.puedoSubir()) { //Si el ticket ya fue comprado y el tren tiene asiento
-                tren.subirAlTren(nombre);
-                tengoTicket = false;
-                diVuelta = true;
-            } else {
-                System.out.println(nombre + " NO puede subir al tren! Esta lleno!");
-                this.caminarUnRato(); //Para cuando no pudo subir porque el tren estaba lleno
+            if (!tengoTicket) {
+                this.comprarTicket();
+            }
+            try {
+                if (tengoTicket && tren.puedoSubir()) { //Si el ticket ya fue comprado y el tren tiene asiento
+                    tren.subirAlTren(nombre);
+                    tengoTicket = false;
+                    diVuelta = true;
+                } else {
+                    System.out.println(nombre + " NO puede subir al tren! Esta lleno!");
+                    this.caminarUnRato(); //Para cuando no pudo subir porque el tren estaba lleno
+                }
+            } catch (InterruptedException ex) {
             }
         }
     }

@@ -5,7 +5,6 @@
  */
 package Vallejos.FAI2003.Ejercicio1;
 
-
 /**
  *
  * @author Nicolás
