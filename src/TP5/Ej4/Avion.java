@@ -43,12 +43,10 @@ public class Avion implements Runnable {
         try {
             switch (r) {
                 case 1:
-                    //System.out.println("Estoy volando quiero aterrizar, soy " + Thread.currentThread().getName());
                     pista.comunicarmeConLaTorre(r);
                     this.pedirAterrizar();
                     break;
                 case 2:
-                    //System.out.println("Estoy es tierra quiero despegar, soy " + Thread.currentThread().getName());
                     pista.comunicarmeConLaTorre(r);
                     this.pedirDespegar();
                     break;
