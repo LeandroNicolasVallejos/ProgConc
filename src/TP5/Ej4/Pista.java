@@ -15,7 +15,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Pista {
 
     private String nombre;
-    private Semaphore semDespegar, semPista, semAterrizajes;
+    private Semaphore semDespegar, semPista, semAterrizajes, semAterrizo;
     private ReentrantLock lock;
     private Lista aux = new Lista();
     private int i = 1;
@@ -25,6 +25,7 @@ public class Pista {
     public Pista(String n) {
         nombre = n;
         semDespegar = new Semaphore(0);
+        semAterrizo = new Semaphore(1);
         semAterrizajes = new Semaphore(10); //Para cambiar la prioridad cuando ya se pidieron 10 aterrizajes
         semPista = new Semaphore(1);//es para controlar que solo un avion este en la pista.
         lock = new ReentrantLock();
@@ -43,6 +44,7 @@ public class Pista {
     public boolean aterrizar() throws InterruptedException {
         boolean pude = false;
         if (contadorAterrizados > 0 || aux.localizar(2) == (-1)) { // TODAVIA HAY PRIORIDAD DE ATERRIZAJE, O no hay despegues pedidos
+            semAterrizo.acquire();
             System.out.println("Estoy volando quiero aterrizar, soy " + Thread.currentThread().getName());
             semPista.acquire();
             System.out.println("Soy " + Thread.currentThread().getName() + " estoy aterrizando");
@@ -62,6 +64,8 @@ public class Pista {
             System.out.println(contadorAterrizados);
             if (aux.localizar(1) == (-1) || contadorAterrizados == 0) {//Si encuentro un -1 en la lista es xq no hay nadie mas que quiera aterrizar, por lo tanto ya pueden despegar los qiue estan en tierra
                 semDespegar.release();
+            } else {
+                semAterrizo.release();
             }
             semPista.release();
         } else {
@@ -90,6 +94,7 @@ public class Pista {
             } finally {
                 lock.unlock();
             }
+            semAterrizo.release();
             semDespegar.release();
         }
         return pude;
