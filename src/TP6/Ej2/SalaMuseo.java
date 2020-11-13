@@ -37,12 +37,13 @@ public class SalaMuseo {
     public synchronized void salirSala() {
         System.out.println("Se va una persona, quedan " + cantPersonas);
         cantPersonas--;
-        this.notify();
+        this.notifyAll();
     }
 
     public synchronized void entrarSalaJubilado() throws InterruptedException {
+        jubiladosEsperando++;
         while (lleno()) {
-            jubiladosEsperando++;
+            
             this.wait();
         }
         jubiladosEsperando--;
@@ -80,5 +81,6 @@ public class SalaMuseo {
             bajarCapacidad();
             System.out.println("SE SUPERÓ LA TEMPERATURA UMBRAL, SE LIMITA A 35 PERSONAS");
         }
+        this.notifyAll();
     }
 }
