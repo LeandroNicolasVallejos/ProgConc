@@ -12,19 +12,19 @@ import java.util.logging.Logger;
  *
  * @author Nicolás
  */
-public class GestorSala implements Runnable{
+public class GestorSala implements Runnable {
+
     private SalaMuseo museo;
-    
-    public GestorSala(SalaMuseo mus){
+
+    public GestorSala(SalaMuseo mus) {
         museo = mus;
     }
-    
-    
-    public void run(){
-        while(true){
+
+    public void run() {
+        while (true) {
             int temp = museo.pedirTemperatura();
             museo.notificarTemperatura(temp);
-            if(temp >= museo.getUmbral()){
+            if (temp >= museo.getUmbral()) {
                 try {
                     Thread.sleep(10000);
                     museo.reiniciarTemperatura();

@@ -22,7 +22,7 @@ public class TestMuseo {
             hiloPersonas[i] = new Thread(new Persona(museo, "Persona " + i, num));
         }
         hiloGestor.start();
-        for(int i = 0; i < 69; i++){  // NICE (͡°ʖ͡°)
+        for (int i = 0; i < 69; i++) {  // NICE (͡°ʖ͡°)
             hiloPersonas[i].start();
         }
     }

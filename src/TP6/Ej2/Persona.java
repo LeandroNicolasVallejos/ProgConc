@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  *
  * @author Nicolás
  */
-public class Persona implements Runnable{
+public class Persona implements Runnable {
 
     private String nombre;
     private SalaMuseo museo;
@@ -26,31 +26,32 @@ public class Persona implements Runnable{
             jubilado = true;
         }
     }
-    
-    public void run(){
-        while(true){
-            if(jubilado){
+
+    public void run() {
+        while (true) {
+            if (jubilado) {
                 try {
-                    museo.entrarSalaJubilado();
+                    museo.entrarSalaJubilado(nombre);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Persona.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                try {
+                    museo.entrarSala(nombre);
+
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Persona.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            else{
-                try {
-                    museo.entrarSala();
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(Persona.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            
+
             try {
-                Thread.sleep((int)(Math.random()*9000));
+                Thread.sleep((int) (Math.random() * 9000));
             } catch (InterruptedException ex) {
                 Logger.getLogger(Persona.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             museo.salirSala();
+            System.out.println("     " + nombre + " SE VA DE LA SALA");
         }
     }
 }

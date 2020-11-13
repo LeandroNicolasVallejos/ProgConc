@@ -15,6 +15,9 @@ public class SalaMuseo {
 
     private int jubiladosEsperando;
 
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_RED = "\u001B[31m";
+
     private synchronized boolean lleno() {
         return (cantPersonas >= capacidadActual);
     }
@@ -27,25 +30,28 @@ public class SalaMuseo {
         tUmbral = 30;
     }
 
-    public synchronized void entrarSala() throws InterruptedException {
+    public synchronized void entrarSala(String nombre) throws InterruptedException {
         while (lleno() || jubiladosEsperando > 0) {
             this.wait();
         }
+        System.out.println(nombre + "entra!");
+
         cantPersonas++;
     }
 
     public synchronized void salirSala() {
-        System.out.println("Se va una persona, quedan " + cantPersonas);
+        System.out.println("       Se va una persona, quedan " + cantPersonas);
         cantPersonas--;
         this.notifyAll();
     }
 
-    public synchronized void entrarSalaJubilado() throws InterruptedException {
+    public synchronized void entrarSalaJubilado(String nombre) throws InterruptedException {
         jubiladosEsperando++;
         while (lleno()) {
-            
+
             this.wait();
         }
+        System.out.println(ANSI_BLUE + "JUBILADO " + nombre + " entra!");
         jubiladosEsperando--;
         cantPersonas++;
     }
@@ -63,7 +69,7 @@ public class SalaMuseo {
     }
 
     public void reiniciarTemperatura() {
-        System.out.println("      SE REINICIA LA TEMP A 0, CAPACIDAD NORMAL");
+        System.out.println(ANSI_RED + "      SE REINICIA LA TEMP A 0, CAPACIDAD NORMAL");
         tempActual = 0;
         subirCapacidad();
     }
@@ -71,15 +77,16 @@ public class SalaMuseo {
     public int pedirTemperatura() {
         int num = this.tempActual + (int) (Math.random() * 25);
         tempActual = num;
-        System.out.println("      TEMP ACTUAL: " + num + " grados");
-        System.out.println("      ACTUALMENTE HAY " + cantPersonas + " PERSONAS ADENTRO");
+        System.out.println(ANSI_RED + "      TEMP ACTUAL: " + num + " grados");
+        System.out.println(ANSI_RED + "      ACTUALMENTE HAY " + cantPersonas + " PERSONAS ADENTRO");
+        System.out.println(ANSI_RED + "      ACTUALMENTE HAY " + jubiladosEsperando + " JUBILADOS ESPERANDO");
         return num;
     }
 
     public synchronized void notificarTemperatura(int temperatura) {
         if (temperatura >= tUmbral && capacidadActual == 50) {
             bajarCapacidad();
-            System.out.println("SE SUPERÓ LA TEMPERATURA UMBRAL, SE LIMITA A 35 PERSONAS");
+            System.out.println(ANSI_RED + "SE SUPERÓ LA TEMPERATURA UMBRAL, SE LIMITA A 35 PERSONAS");
         }
         this.notifyAll();
     }
