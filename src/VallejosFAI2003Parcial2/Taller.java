@@ -40,12 +40,18 @@ public class Taller {
         accesoCaja = lockCaja.newCondition();
     }
 
-    private void avisar() { // USADO POR COSTURERA Y EL QUE HACE CUERPOS, AVISA CUANDO SE CUMPLE UNO DE LOS DOS REQUERIMIENTOS DEl ENSAMBLADOR
+    private void avisar() { // USADO POR COSTURERA Y EL QUE HACE CUERPOS, AVISA CUANDO SE CUMPLEN LOS REQUISITOS
         lockCaja.lock();
         try {
             accesoCaja.signalAll();
         } finally {
             lockCaja.unlock();
+        }
+    }
+
+    private void requisitos() {
+        if (mangasActual >= 2 && cuerposActual >= 1) {
+            avisar();
         }
     }
 
@@ -59,10 +65,8 @@ public class Taller {
             System.out.println("Soy la COSTURERA de MANGAS " + nombreEmpleado + " y dejo una manga mas en la cesta");
             mangasActual++;
             System.out.println(ANSI_BLUE + "              COSTURERA:     ---- HAY " + mangasActual + " MANGAS HECHAS");
-            if (mangasActual >= 2) {
-                avisar();
-            }
-            accesoCesto1.signalAll();
+            requisitos();
+//            accesoCesto1.signalAll();
         } finally {
             cestoManga.unlock();
         }
@@ -78,10 +82,8 @@ public class Taller {
             System.out.println("Soy el trabajador de los CUERPOS " + nombreEmpleado + " y dejo un cuerpo mas en la cesta");
             cuerposActual++;
             System.out.println(ANSI_BLUE + "              CUERPOS:     ---- HAY " + cuerposActual + " CUERPOS HECHOS");
-            if (cuerposActual >= 2) {
-                avisar();
-            }
-            accesoCesto2.signalAll();
+            requisitos();
+//            accesoCesto2.signalAll();
         } finally {
             cestoCuerpo.unlock();
         }
@@ -106,23 +108,45 @@ public class Taller {
     }
 
     public void ensamblar(String nombreEmpleado) throws InterruptedException {
+        boolean tengoCuerpo = false;
+        boolean tengoManga = false;
         lockCaja.lock();
         try {
             while ((cuerposActual < 1) || (mangasActual < 2)) { //No hay suficiente material para ensamblar
                 System.out.println("Soy el ENSAMBLADOR " + nombreEmpleado + " y NO PUEDO ensamblar, faltan materiales");
+                if (cuerposActual >= 1) {
+                    System.out.println("      PEEEEEEERO ME QUEDO CON 1 CUERPO, porque eso sí había");
+                    tengoCuerpo = true;
+                    cuerposActual--;
+                    avisar3();
+                }
+                if (mangasActual >= 2) {
+                    System.out.println("      PEEEEEEERO ME QUEDO CON 2 MANGAS, porque eso sí había");
+                    tengoManga = true;
+                    mangasActual = mangasActual - 2;
+                    avisar2();
+                }
                 accesoCaja.await();
             }
+            if (!tengoCuerpo) {
+                cuerposActual--;
+                avisar3();
+            }
+            if (!tengoManga) {
+                mangasActual = mangasActual - 2;
+                avisar2();
+            }
             suetersActual++;
-            mangasActual = mangasActual - 2;
-            cuerposActual--;
+//            mangasActual = mangasActual - 2;
+//            cuerposActual--;
             System.out.println(ANSI_BLUE + "      Soy el ENSAMBLADOR " + nombreEmpleado + " y ENSAMBLE CORRECTAMENTE otro sueter, llevo " + suetersActual + " para esta caja");
             if (suetersActual == 10) {
                 cantCajasLlenas++; //Se agrega una caja llena al contador
                 suetersActual = 0; //Se reinicia contador de sueters para una caja nueva
                 System.out.println(ANSI_RED + "     ---> SE LLENO OTRA CAJA. CAJAS LLENAS: " + cantCajasLlenas);
             }
-            avisar2(); //AVISA QUE YA PUEDEN HACERSE MAS MANGAS
-            avisar3(); //AVISA QUE YA PUEDEN HACERSE MAS CUERPOS
+//            avisar2(); //AVISA QUE YA PUEDEN HACERSE MAS MANGAS
+//            avisar3(); //AVISA QUE YA PUEDEN HACERSE MAS CUERPOS
         } finally {
             lockCaja.unlock();
         }
